@@ -117,9 +117,20 @@ const Index = () => {
                 <div className="space-y-2">
                   <p className="font-semibold">Rua Canadá, 321</p>
                   <p className="text-muted-foreground">Jardim Canaã - Varginha, MG</p>
-                  <Button variant="outline" size="sm" className="w-full mt-3">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    Ver no Mapa
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full mt-3"
+                    asChild
+                  >
+                    <a 
+                      href="https://www.google.com/maps?sca_esv=e4e61ca27f8efc23&rlz=1C1VDKB_enBR1141BR1141&sxsrf=AE3TifMnCB_9r5DNSZz2WDT_MpDoL-ZIiQ:1754917522313&kgmid=/g/11fsj5s9h5&shndl=30&shem=lcuae,sdl1pl,uaasie&kgs=90374b2d1a643aee&um=1&ie=UTF-8&fb=1&gl=br&sa=X&geocode=KWfHR0mEk8qUMSTIOoO80nzM&daddr=R.+Canad%C3%A1,+321+-+Jardim+Canaa,+Varginha+-+MG,+37026-190"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MapPin className="h-4 w-4 mr-2" />
+                      Ver no Mapa
+                    </a>
                   </Button>
                 </div>
               </CardContent>
