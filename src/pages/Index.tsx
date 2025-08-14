@@ -130,7 +130,7 @@ const Index = () => {
               <CardContent>
                 <div className="text-center">
                   <img
-                    src="/images/pastor.jpeg"
+                    src={`${import.meta.env.BASE_URL}images/pastor.jpeg`}
                     alt="Foto do Pastor Ben-Hur Judah"
                     className="mx-auto mb-4 rounded-full w-32 h-32 object-cover shadow"
                   />

@@ -23,7 +23,7 @@ const Header = () => {
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
-            <img src="/images/logo.jpeg" alt="Logo" className="h-6 w-6 text-primary" />
+            <img src="/images/logo.svg" alt="Logo" className="h-6 w-6" />
             <span className="hidden font-bold sm:inline-block">
               2ª IPV
             </span>
@@ -62,7 +62,7 @@ const Header = () => {
                 className="flex items-center space-x-2"
                 onClick={() => setIsOpen(false)}
               >
-                <img src="/images/logo.jpeg" alt="Logo" className="h-6 w-6 text-primary" />
+                <img src={`${import.meta.env.BASE_URL}images/logo.svg`} alt="Logo" className="h-6 w-6" />
                 <span className="font-bold">2ª Igreja Presbiteriana de Varginha</span>
               </Link>
               <nav className="mt-6 flex flex-col space-y-4">
@@ -88,7 +88,7 @@ const Header = () => {
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
             <Link to="/" className="flex items-center space-x-2 md:hidden">
-              <img src="/images/logo.jpeg" alt="Logo" className="h-6 w-6 text-primary" />
+              <img src="/images/logo.svg" alt="Logo" className="h-6 w-6" />
               <span className="font-bold">2ª IPV</span>
             </Link>
           </div>

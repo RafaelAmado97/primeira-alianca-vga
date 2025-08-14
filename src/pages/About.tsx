@@ -25,7 +25,7 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <img
-                src="/images/cruz.jpg"
+                src={`${import.meta.env.BASE_URL}images/cruz.jpg`}
                 alt="Igreja Presbiteriana de Varginha"
                 className="rounded-lg border-r-2 shadow-lg w-full"
               />
