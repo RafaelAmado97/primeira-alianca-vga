@@ -10,6 +10,7 @@ const Header = () => {
 
   const navigation = [
     { name: "Início", href: "/" },
+    { name: "Sobre", href: "/sobre" },
     { name: "Eventos", href: "/eventos" },
     { name: "Galeria", href: "/galeria" },
     { name: "Símbolos de Fé", href: "/simbolos-fe" },
@@ -22,7 +23,7 @@ const Header = () => {
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
-            <Church className="h-6 w-6 text-primary" />
+            <img src="/images/logo.jpeg" alt="Logo" className="h-6 w-6 text-primary" />
             <span className="hidden font-bold sm:inline-block">
               2ª IPV
             </span>
@@ -55,38 +56,49 @@ const Header = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
-            <Link
-              to="/"
-              className="flex items-center space-x-2"
-              onClick={() => setIsOpen(false)}
-            >
-              <Church className="h-6 w-6 text-primary" />
-              <span className="font-bold">2ª Igreja Presbiteriana de Varginha</span>
-            </Link>
-            <nav className="mt-6 flex flex-col space-y-4">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`transition-colors hover:text-primary ${
-                    isActive(item.href)
-                      ? "text-primary font-semibold"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
+            <>
+              <Link
+                to="/"
+                className="flex items-center space-x-2"
+                onClick={() => setIsOpen(false)}
+              >
+                <img src="/images/logo.jpeg" alt="Logo" className="h-6 w-6 text-primary" />
+                <span className="font-bold">2ª Igreja Presbiteriana de Varginha</span>
+              </Link>
+              <nav className="mt-6 flex flex-col space-y-4">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`transition-colors hover:text-primary ${
+                      isActive(item.href)
+                        ? "text-primary font-semibold"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </nav>
+            </>
           </SheetContent>
         </Sheet>
 
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
             <Link to="/" className="flex items-center space-x-2 md:hidden">
-              <Church className="h-6 w-6 text-primary" />
+              <img src="/images/logo.jpeg" alt="Logo" className="h-6 w-6 text-primary" />
               <span className="font-bold">2ª IPV</span>
+            </Link>
+          </div>
+          <div className="hidden md:block">
+            <Link 
+              to="/admin" 
+              className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+              title="Acesso administrativo"
+            >
+              ⚙️
             </Link>
           </div>
         </div>

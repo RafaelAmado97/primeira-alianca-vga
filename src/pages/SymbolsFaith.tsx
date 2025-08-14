@@ -7,7 +7,6 @@ interface Document {
   id: string;
   title: string;
   description: string;
-  year: string;
   type: string;
   downloadUrl: string;
   previewUrl?: string;
@@ -18,30 +17,33 @@ const SymbolsFaith = () => {
     {
       id: "1",
       title: "Confissão de Fé de Westminster",
-      description: "O principal documento doutrinário das igrejas reformadas, elaborado pela Assembleia de Westminster (1643-1649). Apresenta de forma sistemática as principais doutrinas bíblicas.",
-      year: "1647",
+      description:
+        "O principal documento doutrinário das igrejas reformadas, elaborado pela Assembleia de Westminster (1643-1649). Apresenta de forma sistemática as principais doutrinas bíblicas.",
       type: "Confissão",
-      downloadUrl: "/docs/confissao-fe-westminster.pdf",
-      previewUrl: "#"
+      downloadUrl: "/docs/confissao_de_westminster.pdf",
+      previewUrl:
+        "https://www.executivaipb.com.br/arquivos/confissao_de_westminster.pdf",
     },
     {
       id: "2",
       title: "Catecismo Menor de Westminster",
-      description: "Um resumo conciso da doutrina cristã reformada em formato de perguntas e respostas, ideal para o ensino de crianças e novos convertidos.",
-      year: "1647",
+      description:
+        "Um resumo conciso da doutrina cristã reformada em formato de perguntas e respostas, ideal para o ensino de crianças e novos convertidos.",
       type: "Catecismo",
-      downloadUrl: "/docs/catecismo-menor-westminster.pdf",
-      previewUrl: "#"
+      downloadUrl: "/docs/Breve_Catecismo_de_Westminster.pdf",
+      previewUrl:
+        "https://www.ipb.org.br/content/Arquivos/Breve_Catecismo_de_Westminster.pdf",
     },
     {
       id: "3",
       title: "Catecismo Maior de Westminster",
-      description: "Uma exposição mais detalhada da doutrina reformada, complementando o Catecismo Menor com explicações mais profundas das verdades bíblicas.",
-      year: "1647",
+      description:
+        "Uma exposição mais detalhada da doutrina reformada, complementando o Catecismo Menor com explicações mais profundas das verdades bíblicas.",
       type: "Catecismo",
-      downloadUrl: "/docs/catecismo-maior-westminster.pdf",
-      previewUrl: "#"
-    }
+      downloadUrl: "/docs/Catecismo_Maior_de_Westminster.pdf",
+      previewUrl:
+        "https://www.ipb.org.br/content/Arquivos/Catecismo_Maior_de_Westminster.pdf",
+    },
   ];
 
   const getTypeColor = (type: string) => {
@@ -55,10 +57,14 @@ const SymbolsFaith = () => {
     }
   };
 
-  const handleDownload = (document: Document) => {
-    // Em um ambiente real, isso faria o download do arquivo
-    console.log(`Baixando: ${document.title}`);
-    // window.open(document.downloadUrl, '_blank');
+  const handleDownload = (doc: Document) => {
+    // Cria um link temporário para download
+    const link = document.createElement("a");
+    link.href = doc.downloadUrl;
+    link.download = doc.title + ".pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -69,13 +75,16 @@ const SymbolsFaith = () => {
             Símbolos de Fé
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6">
-            Os documentos fundamentais da fé reformada que orientam nossa doutrina e prática
+            Os documentos fundamentais da fé reformada que orientam nossa
+            doutrina e prática
           </p>
           <div className="bg-accent/30 rounded-lg p-6 max-w-4xl mx-auto">
             <p className="text-muted-foreground leading-relaxed">
-              Os símbolos de fé são documentos históricos que expressam as convicções doutrinárias 
-              das igrejas reformadas. Elaborados pela Assembleia de Westminster no século XVII, 
-              estes textos continuam sendo a base doutrinária das igrejas presbiterianas em todo o mundo.
+              Os símbolos de fé são documentos históricos que expressam as
+              convicções doutrinárias das igrejas reformadas. Elaborados pela
+              Assembleia de Westminster no século XVII, estes textos continuam
+              sendo a base doutrinária das igrejas presbiterianas em todo o
+              mundo.
             </p>
           </div>
         </div>
@@ -88,9 +97,6 @@ const SymbolsFaith = () => {
                   <Badge className={getTypeColor(document.type)}>
                     {document.type}
                   </Badge>
-                  <span className="text-sm text-muted-foreground font-medium">
-                    {document.year}
-                  </span>
                 </div>
                 <CardTitle className="text-xl leading-tight">
                   {document.title}
@@ -100,21 +106,21 @@ const SymbolsFaith = () => {
                 <p className="text-muted-foreground leading-relaxed mb-6 flex-1">
                   {document.description}
                 </p>
-                
+
                 <div className="space-y-3">
-                  <Button 
+                  <Button
                     onClick={() => handleDownload(document)}
                     className="w-full"
                   >
                     <Download className="h-4 w-4 mr-2" />
                     Baixar PDF
                   </Button>
-                  
+
                   {document.previewUrl && (
-                    <Button 
+                    <Button
                       variant="outline"
                       className="w-full"
-                      onClick={() => window.open(document.previewUrl, '_blank')}
+                      onClick={() => window.open(document.previewUrl, "_blank")}
                     >
                       <BookOpen className="h-4 w-4 mr-2" />
                       Visualizar Online
@@ -136,26 +142,27 @@ const SymbolsFaith = () => {
               <FileText className="h-12 w-12 text-primary" />
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-3 text-primary">
                 Importância Histórica
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Estes documentos foram elaborados durante um período crucial da história 
-                da igreja, estabelecendo fundamentos doutrinários sólidos que perduram 
-                há mais de 350 anos.
+                Estes documentos foram elaborados durante um período crucial da
+                história da igreja, estabelecendo fundamentos doutrinários
+                sólidos que perduram há mais de 350 anos.
               </p>
             </div>
-            
+
             <div>
               <h3 className="text-lg font-semibold mb-3 text-primary">
                 Relevância Atual
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Continuam sendo a base doutrinária das igrejas reformadas, orientando 
-                o ensino, a pregação e a vida cristã de milhões de pessoas ao redor do mundo.
+                Continuam sendo a base doutrinária das igrejas reformadas,
+                orientando o ensino, a pregação e a vida cristã de milhões de
+                pessoas ao redor do mundo.
               </p>
             </div>
           </div>

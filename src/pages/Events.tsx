@@ -9,197 +9,221 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  description: string;
-  category: string;
-  image: string;
-  registrationLink?: string;
-  capacity?: number;
-}
+import { useApp } from "@/hooks/useApp";
+import { Event } from "@/contexts/AppContext";
 
 const Events = () => {
+  const { state } = useApp();
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
 
-  const events: Event[] = [
-    {
-      id: "1",
-      title: "Encontro de Fé Reformada",
-      date: "15 de Dezembro, 2024",
-      time: "19:00",
-      location: "Templo Principal",
-      description: "Um encontro especial para aprofundamento na doutrina reformada, com estudos bíblicos e momentos de comunhão.",
-      category: "Ensino",
-      image: "/placeholder.svg",
-      registrationLink: "https://forms.google.com/exemplo",
-      capacity: 100
-    },
-    {
-      id: "2",
-      title: "Encontro da Família",
-      date: "22 de Dezembro, 2024",
-      time: "15:00",
-      location: "Salão de Eventos",
-      description: "Um momento especial para as famílias da igreja se reunirem, com atividades para todas as idades, lanche comunitário e muito companheirismo.",
-      category: "Família",
-      image: "/placeholder.svg",
-      registrationLink: "https://forms.google.com/exemplo",
-      capacity: 150
-    },
-    {
-      id: "3",
-      title: "Aniversário da Igreja",
-      date: "10 de Janeiro, 2025",
-      time: "10:00",
-      location: "Templo Principal",
-      description: "Celebração do aniversário da nossa igreja com culto especial, homenagens aos fundadores e confraternização.",
-      category: "Celebração",
-      image: "/placeholder.svg",
-      capacity: 200
-    }
-  ];
+  // Get unique categories from events
+  const categories = ["Todos", ...Array.from(new Set(state.events.map(event => event.category)))];
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "Ensino":
-        return "bg-blue-100 text-blue-800";
-      case "Família":
-        return "bg-green-100 text-green-800";
-      case "Celebração":
-        return "bg-purple-100 text-purple-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
+  // Filter events by category
+  const filteredEvents = selectedCategory === "Todos" 
+    ? state.events 
+    : state.events.filter(event => event.category === selectedCategory);
+
+  // Sort events by date (upcoming first)
+  const sortedEvents = filteredEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
   };
+
+  if (state.isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>Carregando eventos...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Eventos da Igreja
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-primary/10 to-accent/20 py-20">
+        <div className="container text-center">
+          <Calendar className="h-16 w-16 text-primary mx-auto mb-6" />
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+            Eventos
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Participe dos nossos eventos e fortaleça sua fé e comunhão
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+            Participe dos nossos eventos e momentos especiais de comunhão e crescimento espiritual
           </p>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events.map((event) => (
-            <Card 
-              key={event.id} 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => setSelectedEvent(event)}
-            >
-              <div className="aspect-video bg-muted rounded-t-lg flex items-center justify-center">
-                <img 
-                  src={event.image} 
-                  alt={event.title}
-                  className="w-full h-full object-cover rounded-t-lg"
-                />
-              </div>
-              <CardHeader>
-                <div className="flex justify-between items-start mb-2">
-                  <Badge className={getCategoryColor(event.category)}>
-                    {event.category}
-                  </Badge>
-                  {event.capacity && (
-                    <div className="flex items-center text-sm text-muted-foreground">
-                      <Users className="h-4 w-4 mr-1" />
-                      {event.capacity}
-                    </div>
-                  )}
-                </div>
-                <CardTitle className="text-xl">{event.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2 text-sm text-muted-foreground">
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    {event.date} às {event.time}
-                  </div>
-                  <div className="flex items-center">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    {event.location}
-                  </div>
-                </div>
-                <p className="text-sm mt-3 line-clamp-2">
-                  {event.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+      {/* Category Filter */}
+      <section className="py-8 border-b">
+        <div className="container">
+          <div className="flex flex-wrap gap-2 justify-center">
+            {categories.map((category) => (
+              <Badge
+                key={category}
+                variant={selectedCategory === category ? "default" : "outline"}
+                className="cursor-pointer px-4 py-2"
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category}
+              </Badge>
+            ))}
+          </div>
         </div>
+      </section>
 
-        <Dialog open={!!selectedEvent} onOpenChange={() => setSelectedEvent(null)}>
-          <DialogContent className="max-w-2xl">
-            {selectedEvent && (
-              <>
-                <DialogHeader>
-                  <DialogTitle className="text-2xl">{selectedEvent.title}</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-6">
-                  <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                    <img 
-                      src={selectedEvent.image} 
-                      alt={selectedEvent.title}
-                      className="w-full h-full object-cover rounded-lg"
+      {/* Events Grid */}
+      <section className="py-16">
+        <div className="container">
+          {sortedEvents.length === 0 ? (
+            <div className="text-center py-12">
+              <Calendar className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Nenhum evento encontrado</h3>
+              <p className="text-muted-foreground">
+                {selectedCategory === "Todos" 
+                  ? "Não há eventos cadastrados no momento." 
+                  : `Não há eventos na categoria "${selectedCategory}".`
+                }
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {sortedEvents.map((event) => (
+                <Card 
+                  key={event.id} 
+                  className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setSelectedEvent(event)}
+                >
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-full object-cover transition-transform hover:scale-105"
                     />
+                    <div className="absolute top-4 left-4">
+                      <Badge variant="secondary">{event.category}</Badge>
+                    </div>
                   </div>
                   
-                  <div className="flex flex-wrap gap-4 text-sm">
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-2 text-primary" />
-                      {selectedEvent.date} às {selectedEvent.time}
-                    </div>
-                    <div className="flex items-center">
-                      <MapPin className="h-4 w-4 mr-2 text-primary" />
-                      {selectedEvent.location}
-                    </div>
-                    {selectedEvent.capacity && (
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-2 text-primary" />
-                        Capacidade: {selectedEvent.capacity} pessoas
+                  <CardHeader>
+                    <CardTitle className="text-xl">{event.title}</CardTitle>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center text-muted-foreground">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        <span>{formatDate(event.date)} às {event.time}</span>
                       </div>
-                    )}
-                  </div>
+                      
+                      <div className="flex items-center text-muted-foreground">
+                        <MapPin className="h-4 w-4 mr-2" />
+                        <span>{event.location}</span>
+                      </div>
+                      
+                      {event.capacity && (
+                        <div className="flex items-center text-muted-foreground">
+                          <Users className="h-4 w-4 mr-2" />
+                          <span>Vagas: {event.capacity}</span>
+                        </div>
+                      )}
+                      
+                      <p className="text-sm text-muted-foreground line-clamp-3">
+                        {event.description}
+                      </p>
+                      
+                      <div className="pt-2">
+                        <Button variant="outline" size="sm" className="w-full">
+                          Ver Detalhes
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
+      {/* Event Detail Modal */}
+      <Dialog open={!!selectedEvent} onOpenChange={() => setSelectedEvent(null)}>
+        <DialogContent className="max-w-2xl">
+          {selectedEvent && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl">{selectedEvent.title}</DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-6">
+                <div className="relative h-64 overflow-hidden rounded-lg">
+                  <img
+                    src={selectedEvent.image}
+                    alt={selectedEvent.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center">
+                    <Calendar className="h-5 w-5 mr-3 text-primary" />
+                    <span className="font-semibold">
+                      {formatDate(selectedEvent.date)} às {selectedEvent.time}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <MapPin className="h-5 w-5 mr-3 text-primary" />
+                    <span>{selectedEvent.location}</span>
+                  </div>
+                  
+                  {selectedEvent.capacity && (
+                    <div className="flex items-center">
+                      <Users className="h-5 w-5 mr-3 text-primary" />
+                      <span>Capacidade: {selectedEvent.capacity} pessoas</span>
+                    </div>
+                  )}
+                  
+                  <div className="pt-2">
+                    <Badge>{selectedEvent.category}</Badge>
+                  </div>
+                  
                   <div>
-                    <Badge className={getCategoryColor(selectedEvent.category)}>
-                      {selectedEvent.category}
-                    </Badge>
+                    <h4 className="font-semibold mb-2">Descrição</h4>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {selectedEvent.description}
+                    </p>
                   </div>
-
-                  <p className="text-muted-foreground leading-relaxed">
-                    {selectedEvent.description}
-                  </p>
-
+                  
                   {selectedEvent.registrationLink && (
-                    <div className="flex justify-center">
-                      <Button asChild>
+                    <div className="pt-4">
+                      <Button asChild className="w-full">
                         <a 
                           href={selectedEvent.registrationLink} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="flex items-center"
                         >
                           <ExternalLink className="h-4 w-4 mr-2" />
-                          Fazer Inscrição
+                          Inscrever-se no Evento
                         </a>
                       </Button>
                     </div>
                   )}
                 </div>
-              </>
-            )}
-          </DialogContent>
-        </Dialog>
-      </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

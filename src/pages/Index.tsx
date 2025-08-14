@@ -1,7 +1,19 @@
-import { Clock, MapPin, Phone, Users, Calendar, Heart, Church } from "lucide-react";
+import {
+  Clock,
+  MapPin,
+  Phone,
+  Users,
+  Calendar,
+  Heart,
+  Church,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+
+import { Link } from "react-router-dom";
+import { useApp } from "@/hooks/useApp";
+import { Event } from "@/contexts/AppContext";
 
 interface Official {
   name: string;
@@ -11,19 +23,62 @@ interface Official {
 }
 
 const Index = () => {
+  const { state } = useApp();
   const officials: Official[] = [
-    { name: "João Silva", position: "Presbítero", phone: "(35) 99999-1111", type: "presbitero" },
-    { name: "Pedro Santos", position: "Presbítero", phone: "(35) 99999-2222", type: "presbitero" },
-    { name: "José Oliveira", position: "Presbítero", phone: "(35) 99999-3333", type: "presbitero" },
-    { name: "Maria Costa", position: "Diácona", phone: "(35) 99999-4444", type: "diacono" },
-    { name: "Ana Paula", position: "Diácona", phone: "(35) 99999-5555", type: "diacono" },
-    { name: "Carlos Lima", position: "Diácono", phone: "(35) 99999-6666", type: "diacono" },
+    {
+      name: "Sebastião Pessoa",
+      position: "Presbítero",
+      phone: "(35) 99100-2095",
+      type: "presbitero",
+    },
+    {
+      name: "Rodrigo Schneider",
+      position: "Presbítero",
+      phone: "(16) 99788-8451",
+      type: "presbitero",
+    },
+    {
+      name: "Márcio Oliveira",
+      position: "Presbítero",
+      phone: "(35) 98833-0984",
+      type: "presbitero",
+    },
+    {
+      name: "Luiz Gustavo",
+      position: "Presbítero",
+      phone: "(35) 98868-4959",
+      type: "presbitero",
+    },
+    {
+      name: "Felipe Muniz",
+      position: "Diácono",
+      phone: "(35) 99142-6937",
+      type: "diacono",
+    },
+    {
+      name: "Juliano Machado",
+      position: "Diácono",
+      phone: "(35) 99953-4601",
+      type: "diacono",
+    },
+    {
+      name: "Rafael Amado",
+      position: "Diácono",
+      phone: "(31) 98578-6728",
+      type: "diacono",
+    },
+    {
+      name: "Ricardo Carvalho",
+      position: "Diácono",
+      phone: "(31) 99825-0779",
+      type: "diacono",
+    },
   ];
 
   const schedules = [
     { day: "Quinta-feira", time: "19:30", type: "Culto de Oração" },
-    { day: "Domingo", time: "9:30 - 11:30", type: "Escola Dominical e Culto Matutino" },
-    { day: "Domingo", time: "18:30 - 19:30", type: "Culto Vespertino" },
+    { day: "Domingo", time: "9:30 - 11:30", type: "Escola Dominical" },
+    { day: "Domingo", time: "18:30 - 19:30", type: "Culto" },
   ];
 
   return (
@@ -38,17 +93,15 @@ const Index = () => {
             2ª Igreja Presbiteriana de Varginha
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Uma igreja reformada comprometida com a Palavra de Deus e o serviço ao próximo
+            Uma igreja reformada comprometida com a Palavra de Deus!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8">
-              <Heart className="h-5 w-5 mr-2" />
-              Conheça Nossa Igreja
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8">
-              <Users className="h-5 w-5 mr-2" />
-              Participe dos Cultos
-            </Button>
+            <Link to="/sobre">
+              <Button size="lg" className="text-lg px-8">
+                <Heart className="h-5 w-5 mr-2" />
+                Conheça Nossa Igreja
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -76,9 +129,17 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-center">
-                  <h3 className="text-xl font-semibold mb-2">Rev. Paulo Mendes</h3>
+                  <img
+                    src="/images/pastor.jpeg"
+                    alt="Foto do Pastor Ben-Hur Judah"
+                    className="mx-auto mb-4 rounded-full w-32 h-32 object-cover shadow"
+                  />
+                  <h3 className="text-xl font-semibold mb-2">
+                    Rev. Ben-Hur Judah
+                  </h3>
                   <p className="text-muted-foreground">
-                    Liderando nossa comunidade com amor e dedicação à Palavra de Deus
+                    Liderando nossa comunidade com amor e dedicação à Palavra de
+                    Deus
                   </p>
                 </div>
               </CardContent>
@@ -97,8 +158,12 @@ const Index = () => {
                   {schedules.map((schedule, index) => (
                     <div key={index} className="border-l-2 border-primary pl-3">
                       <div className="font-semibold">{schedule.day}</div>
-                      <div className="text-sm text-muted-foreground">{schedule.time}</div>
-                      <div className="text-sm text-primary">{schedule.type}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {schedule.time}
+                      </div>
+                      <div className="text-sm text-primary">
+                        {schedule.type}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -116,14 +181,16 @@ const Index = () => {
               <CardContent>
                 <div className="space-y-2">
                   <p className="font-semibold">Rua Canadá, 321</p>
-                  <p className="text-muted-foreground">Jardim Canaã - Varginha, MG</p>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
+                  <p className="text-muted-foreground">
+                    Jardim Canaã - Varginha, MG
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
                     className="w-full mt-3"
                     asChild
                   >
-                    <a 
+                    <a
                       href="https://www.google.com/maps?sca_esv=e4e61ca27f8efc23&rlz=1C1VDKB_enBR1141BR1141&sxsrf=AE3TifMnCB_9r5DNSZz2WDT_MpDoL-ZIiQ:1754917522313&kgmid=/g/11fsj5s9h5&shndl=30&shem=lcuae,sdl1pl,uaasie&kgs=90374b2d1a643aee&um=1&ie=UTF-8&fb=1&gl=br&sa=X&geocode=KWfHR0mEk8qUMSTIOoO80nzM&daddr=R.+Canad%C3%A1,+321+-+Jardim+Canaa,+Varginha+-+MG,+37026-190"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -164,21 +231,28 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {officials.filter(official => official.type === "presbitero").map((official, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-accent/20 rounded-lg">
-                      <div>
-                        <div className="font-semibold">{official.name}</div>
-                        <div className="text-sm text-muted-foreground">{official.position}</div>
-                      </div>
-                      <a 
-                        href={`tel:${official.phone}`}
-                        className="flex items-center text-primary hover:text-primary/80 transition-colors"
+                  {officials
+                    .filter((official) => official.type === "presbitero")
+                    .map((official, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center p-3 bg-accent/20 rounded-lg"
                       >
-                        <Phone className="h-4 w-4 mr-1" />
-                        <span className="text-sm">{official.phone}</span>
-                      </a>
-                    </div>
-                  ))}
+                        <div>
+                          <div className="font-semibold">{official.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {official.position}
+                          </div>
+                        </div>
+                        <a
+                          href={`tel:${official.phone}`}
+                          className="flex items-center text-primary hover:text-primary/80 transition-colors"
+                        >
+                          <Phone className="h-4 w-4 mr-1" />
+                          <span className="text-sm">{official.phone}</span>
+                        </a>
+                      </div>
+                    ))}
                 </div>
               </CardContent>
             </Card>
@@ -195,27 +269,35 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {officials.filter(official => official.type === "diacono").map((official, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-accent/20 rounded-lg">
-                      <div>
-                        <div className="font-semibold">{official.name}</div>
-                        <div className="text-sm text-muted-foreground">{official.position}</div>
-                      </div>
-                      <a 
-                        href={`tel:${official.phone}`}
-                        className="flex items-center text-primary hover:text-primary/80 transition-colors"
+                  {officials
+                    .filter((official) => official.type === "diacono")
+                    .map((official, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center p-3 bg-accent/20 rounded-lg"
                       >
-                        <Phone className="h-4 w-4 mr-1" />
-                        <span className="text-sm">{official.phone}</span>
-                      </a>
-                    </div>
-                  ))}
+                        <div>
+                          <div className="font-semibold">{official.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {official.position}
+                          </div>
+                        </div>
+                        <a
+                          href={`tel:${official.phone}`}
+                          className="flex items-center text-primary hover:text-primary/80 transition-colors"
+                        >
+                          <Phone className="h-4 w-4 mr-1" />
+                          <span className="text-sm">{official.phone}</span>
+                        </a>
+                      </div>
+                    ))}
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </section>
+
 
       {/* Próximos Eventos */}
       <section className="py-16 bg-accent/10">
@@ -230,59 +312,36 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <Badge className="bg-blue-100 text-blue-800">Ensino</Badge>
-                  <Calendar className="h-5 w-5 text-primary" />
-                </div>
-                <CardTitle>Encontro de Fé Reformada</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Aprofundamento na doutrina reformada com estudos bíblicos
-                </p>
-                <div className="text-sm text-primary">15 de Dezembro • 19:00</div>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <Badge className="bg-green-100 text-green-800">Família</Badge>
-                  <Calendar className="h-5 w-5 text-primary" />
-                </div>
-                <CardTitle>Encontro da Família</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Momento especial para famílias com atividades para todas as idades
-                </p>
-                <div className="text-sm text-primary">22 de Dezembro • 15:00</div>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <Badge className="bg-purple-100 text-purple-800">Celebração</Badge>
-                  <Calendar className="h-5 w-5 text-primary" />
-                </div>
-                <CardTitle>Aniversário da Igreja</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Celebração especial com culto e confraternização
-                </p>
-                <div className="text-sm text-primary">10 de Janeiro • 10:00</div>
-              </CardContent>
-            </Card>
+            {state.events
+              .filter((event: Event) => new Date(event.date) >= new Date())
+              .sort((a: Event, b: Event) => new Date(a.date).getTime() - new Date(b.date).getTime())
+              .slice(0, 3)
+              .map((event: Event) => (
+                <Card key={event.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge>{event.category}</Badge>
+                      <Calendar className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle>{event.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4">
+                      {event.description}
+                    </p>
+                    <div className="text-sm text-primary">
+                      {new Date(event.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                      {event.time ? ` • ${event.time}` : ''}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
           </div>
 
           <div className="text-center mt-8">
-            <Button size="lg">
-              Ver Todos os Eventos
-            </Button>
+            <Link to="/eventos">
+              <Button size="lg">Ver Todos os Eventos</Button>
+            </Link>
           </div>
         </div>
       </section>

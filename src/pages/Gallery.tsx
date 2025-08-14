@@ -5,204 +5,169 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
-
-interface GalleryImage {
-  id: string;
-  src: string;
-  alt: string;
-  category: string;
-  event: string;
-  date: string;
-}
+import { useApp } from "@/hooks/useApp";
+import { GalleryImage } from "@/contexts/AppContext";
+import { ImageIcon } from "lucide-react";
 
 const Gallery = () => {
+  const { state } = useApp();
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
 
-  const images: GalleryImage[] = [
-    {
-      id: "1",
-      src: "/placeholder.svg",
-      alt: "Culto Dominical",
-      category: "Cultos",
-      event: "Culto Dominical",
-      date: "Dezembro 2024"
-    },
-    {
-      id: "2",
-      src: "/placeholder.svg",
-      alt: "Encontro de Jovens",
-      category: "Jovens",
-      event: "Encontro de Jovens",
-      date: "Novembro 2024"
-    },
-    {
-      id: "3",
-      src: "/placeholder.svg",
-      alt: "Batismo",
-      category: "Sacramentos",
-      event: "Cerimônia de Batismo",
-      date: "Outubro 2024"
-    },
-    {
-      id: "4",
-      src: "/placeholder.svg",
-      alt: "Escola Dominical",
-      category: "Ensino",
-      event: "Escola Dominical",
-      date: "Dezembro 2024"
-    },
-    {
-      id: "5",
-      src: "/placeholder.svg",
-      alt: "Encontro da Família",
-      category: "Família",
-      event: "Encontro da Família",
-      date: "Setembro 2024"
-    },
-    {
-      id: "6",
-      src: "/placeholder.svg",
-      alt: "Ceia do Senhor",
-      category: "Sacramentos",
-      event: "Ceia do Senhor",
-      date: "Dezembro 2024"
-    },
-    {
-      id: "7",
-      src: "/placeholder.svg",
-      alt: "Coral da Igreja",
-      category: "Música",
-      event: "Apresentação do Coral",
-      date: "Novembro 2024"
-    },
-    {
-      id: "8",
-      src: "/placeholder.svg",
-      alt: "Conferência",
-      category: "Ensino",
-      event: "Conferência Reformada",
-      date: "Agosto 2024"
-    }
-  ];
+  // Get unique categories from gallery images
+  const categories = ["Todos", ...Array.from(new Set(state.galleryImages.map(image => image.category)))];
 
-  const categories = ["Todos", ...Array.from(new Set(images.map(img => img.category)))];
-
+  // Filter images by category
   const filteredImages = selectedCategory === "Todos" 
-    ? images 
-    : images.filter(img => img.category === selectedCategory);
+    ? state.galleryImages 
+    : state.galleryImages.filter(image => image.category === selectedCategory);
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "Cultos":
-        return "bg-blue-100 text-blue-800";
-      case "Jovens":
-        return "bg-green-100 text-green-800";
-      case "Sacramentos":
-        return "bg-purple-100 text-purple-800";
-      case "Ensino":
-        return "bg-orange-100 text-orange-800";
-      case "Família":
-        return "bg-pink-100 text-pink-800";
-      case "Música":
-        return "bg-cyan-100 text-cyan-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
+  // Sort images by date (newest first)
+  const sortedImages = filteredImages.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
   };
+
+  if (state.isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>Carregando galeria...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-primary/10 to-accent/20 py-20">
+        <div className="container text-center">
+          <ImageIcon className="h-16 w-16 text-primary mx-auto mb-6" />
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
             Galeria de Fotos
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
             Momentos especiais da nossa comunidade de fé
           </p>
         </div>
+      </section>
 
-        {/* Filtros por categoria */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {categories.map((category) => (
-            <Badge
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </Badge>
-          ))}
-        </div>
-
-        {/* Grid de imagens */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredImages.map((image) => (
-            <Card 
-              key={image.id} 
-              className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => setSelectedImage(image)}
-            >
-              <CardContent className="p-0">
-                <div className="aspect-square bg-muted flex items-center justify-center">
-                  <img 
-                    src={image.src} 
-                    alt={image.alt}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <Badge className={getCategoryColor(image.category)}>
-                      {image.category}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground">
-                      {image.date}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold text-sm">{image.event}</h3>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {filteredImages.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">
-              Nenhuma imagem encontrada para esta categoria.
-            </p>
+      {/* Category Filter */}
+      {categories.length > 1 && (
+        <section className="py-8 border-b">
+          <div className="container">
+            <div className="flex flex-wrap gap-2 justify-center">
+              {categories.map((category) => (
+                <Badge
+                  key={category}
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  className="cursor-pointer px-4 py-2"
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {category}
+                </Badge>
+              ))}
+            </div>
           </div>
-        )}
+        </section>
+      )}
 
-        {/* Modal para exibir imagem ampliada */}
-        <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-          <DialogContent className="max-w-4xl w-full">
-            {selectedImage && (
-              <div className="space-y-4">
-                <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                  <img 
-                    src={selectedImage.src} 
-                    alt={selectedImage.alt}
-                    className="w-full h-full object-contain rounded-lg"
-                  />
-                </div>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="text-xl font-semibold">{selectedImage.event}</h3>
-                    <p className="text-muted-foreground">{selectedImage.date}</p>
+      {/* Gallery Grid */}
+      <section className="py-16">
+        <div className="container">
+          {sortedImages.length === 0 ? (
+            <div className="text-center py-12">
+              <ImageIcon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Nenhuma imagem encontrada</h3>
+              <p className="text-muted-foreground">
+                {selectedCategory === "Todos" 
+                  ? "Não há imagens na galeria no momento." 
+                  : `Não há imagens na categoria "${selectedCategory}".`
+                }
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {sortedImages.map((image) => (
+                <Card 
+                  key={image.id} 
+                  className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setSelectedImage(image)}
+                >
+                  <div className="relative aspect-square overflow-hidden">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-full object-cover transition-transform hover:scale-105"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/placeholder.svg";
+                      }}
+                    />
+                    <div className="absolute top-2 right-2">
+                      <Badge variant="secondary" className="text-xs">
+                        {image.category}
+                      </Badge>
+                    </div>
                   </div>
-                  <Badge className={getCategoryColor(selectedImage.category)}>
-                    {selectedImage.category}
-                  </Badge>
+                  
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-sm mb-1 line-clamp-1">
+                      {image.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
+                      {image.description}
+                    </p>
+                    <div className="flex justify-between items-center text-xs text-muted-foreground">
+                      <span>{image.event}</span>
+                      <span>{formatDate(image.date)}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Image Detail Modal */}
+      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+        <DialogContent className="max-w-4xl">
+          {selectedImage && (
+            <div className="space-y-4">
+              <div className="relative max-h-96 overflow-hidden rounded-lg">
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold">{selectedImage.title}</h3>
+                  <Badge>{selectedImage.category}</Badge>
+                </div>
+                
+                <p className="text-muted-foreground">{selectedImage.description}</p>
+                
+                <div className="flex justify-between items-center text-sm text-muted-foreground pt-2">
+                  <span><strong>Evento:</strong> {selectedImage.event}</span>
+                  <span><strong>Data:</strong> {formatDate(selectedImage.date)}</span>
                 </div>
               </div>
-            )}
-          </DialogContent>
-        </Dialog>
-      </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

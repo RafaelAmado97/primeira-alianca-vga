@@ -11,7 +11,7 @@ const Footer = () => {
               <span className="font-bold text-lg">2ª Igreja Presbiteriana de Varginha</span>
             </div>
             <p className="text-sm text-primary-foreground/80">
-              Uma igreja reformada comprometida com a Palavra de Deus e o serviço ao próximo.
+              Uma igreja reformada comprometida com a Palavra de Deus.
             </p>
           </div>
 
@@ -24,21 +24,25 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>(35) 3221-0000</span>
+                <span>(35) 99834-7282</span>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Horários de Culto</h3>
+            <h3 className="font-semibold mb-4">Horários de funcionamento</h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-center space-x-2">
                 <Clock className="h-4 w-4" />
-                <span>Quinta-feira: 19:30</span>
+                <span>Estudo bíblico: Quinta-feira: 19:30</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Clock className="h-4 w-4" />
-                <span>Domingo: 9:30-11:30 e 18:30-19:30</span>
+                <span>Escola Dominical: Domingo: 9:30-11:30</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Clock className="h-4 w-4" />
+                <span>Culto: Domingo: 18:30-19:30</span>
               </div>
             </div>
           </div>

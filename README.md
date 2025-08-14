@@ -1,73 +1,51 @@
-# Welcome to your Lovable project
 
-## Project info
+# 2ª Igreja Presbiteriana de Varginha
 
-**URL**: https://lovable.dev/projects/a3081d6c-e620-4a55-bd5b-892d576d742b
+Este projeto é a página institucional da 2ª Igreja Presbiteriana de Varginha, desenvolvida com React, Vite e Tailwind CSS.
 
-## How can I edit this code?
+## Sobre
 
-There are several ways of editing your application.
+Aqui você encontra informações sobre eventos, galeria de fotos, símbolos da fé, e outros conteúdos relevantes para membros e visitantes da igreja.
 
-**Use Lovable**
+### Principais funcionalidades
+- Página inicial institucional
+- Agenda de eventos
+- Galeria de fotos
+- Informações sobre símbolos da fé
+- Contato e localização
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a3081d6c-e620-4a55-bd5b-892d576d742b) and start prompting.
+## Como executar o projeto
 
-Changes made via Lovable will be committed automatically to this repo.
+Certifique-se de ter o Node.js e o npm instalados em sua máquina.
 
-**Use your preferred IDE**
+1. Clone o repositório:
+	```sh
+	git clone <URL_DO_REPOSITORIO>
+	```
+2. Acesse a pasta do projeto:
+	```sh
+	cd primeira-alianca-vga
+	```
+3. Instale as dependências:
+	```sh
+	npm install
+	```
+4. Inicie o servidor de desenvolvimento:
+	```sh
+	npm run dev
+	```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+O site estará disponível em `http://localhost:8080`.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Contribuição
 
-Follow these steps:
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Licença
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
+Este projeto é distribuído sob a licença MIT.
 
 - Navigate to the desired file(s).
 - Click the "Edit" button (pencil icon) at the top right of the file view.
 - Make your changes and commit the changes.
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/a3081d6c-e620-4a55-bd5b-892d576d742b) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
